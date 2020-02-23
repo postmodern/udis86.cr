@@ -11,15 +11,15 @@ Crystal bindings for [libudis86]. Inspired by the Ruby [ffi-udis86] gem.
 
    * Debian / Ubuntu
 
-       ????
+         ????
 
-   * RedHat / Fedora
+   * RedHat / Fedora:
 
-       $ sudo apt install udis86-devel
+         $ sudo apt install udis86-devel
 
-   * Brew
+   * Brew:
 
-       $ brew install udis86
+         $ brew install udis86
 
 2. Add the dependency to your `shard.yml`:
 
@@ -104,10 +104,6 @@ ud.disas do |insn|
   puts "  * Operands: " + operands.join(" -> ")
 end
 ```
-
-## Development
-
-TODO: Write development instructions here
 
 ## Contributing
 

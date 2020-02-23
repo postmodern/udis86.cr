@@ -1,6 +1,30 @@
 require "./spec_helper"
 
 Spectator.describe UDis86::Operand do
+  describe "TYPES" do
+    subject { UDis86::Operand::TYPES }
+
+    it "should define mappings from OP_ UDType to Symbols" do
+      subject.each do |op_type,name|
+        expect(subject[op_type].to_s).to eq(op_type.to_s.sub("OP_","").downcase)
+      end
+    end
+  end
+
+  describe "#type" do
+    let(ud_operand) do
+      ud_op = LibUDis86::UDOperand.new
+      ud_op.type = LibUDis86::UDType::OP_REG
+      ud_op
+    end
+
+    subject { described_class.new(ud_operand) }
+
+    it "must return the operand type name as a Symbol" do
+      expect(subject.type).to eq(:reg)
+    end
+  end
+
   describe "REGS" do
     subject { UDis86::Operand::REGS }
 

@@ -4,7 +4,17 @@ require "./operand_value"
 module UDis86
   class Operand
 
-    alias Type = LibUDis86::UDType
+    alias UDType = LibUDis86::UDType
+
+    {% begin %}
+    TYPES = {
+      {% for element in UDType.constants %}
+        {% if element.starts_with?("OP_") %}
+          UDType::{{ element.id }} => :{{ element.stringify.gsub(/^OP_/,"").downcase }},
+        {% end %}
+      {% end %}
+    }
+    {% end %}
 
     #
     # Initializes the operand object.
@@ -15,48 +25,50 @@ module UDis86
     #
     # The type of the operand.
     #
-    delegate type, to: @operand
+    def type
+      TYPES[@operand.type]
+    end
 
     #
     # Determines if the operand is a memory access.
     #
     def is_mem?
-      @operand.type == Type::OP_MEM
+      @operand.type == UDType::OP_MEM
     end
 
     #
     # Determines if the operand is Segment:Offset pointer.
     #
     def is_seg_ptr?
-      @operand.type == Type::OP_PTR
+      @operand.type == UDType::OP_PTR
     end
 
     #
     # Determines if the operand is immediate data.
     #
     def is_imm?
-      @operand.type == Type::OP_IMM
+      @operand.type == UDType::OP_IMM
     end
 
     #
     # Determines if the operand is a relative offset used in a jump.
     #
     def is_jmp_imm?
-      @operand.type = Type::OP_JIMM
+      @operand.type = UDType::OP_JIMM
     end
 
     #
     # Determines if the operand is a data constant.
     #
     def is_const?
-      @operand.type == Type::OP_COONST
+      @operand.type == UDType::OP_COONST
     end
 
     #
     # Determines if the operand is a register.
     #
     def is_reg?
-      @operand.type == Type::OP_REG
+      @operand.type == UDType::OP_REG
     end
 
     #
@@ -78,9 +90,9 @@ module UDis86
     {% begin %}
     # Mappoing of libudis86 register UDTypes to Symbol names
     REGS = {
-      {% for element in Type.constants %}
+      {% for element in UDType.constants %}
         {% if element.starts_with?("R_") %}
-          Type::{{ element.id }} => :{{ element.stringify.gsub(/^R_/,"").downcase }},
+          UDType::{{ element.id }} => :{{ element.stringify.gsub(/^R_/,"").downcase }},
         {% end %}
       {% end %}
     }

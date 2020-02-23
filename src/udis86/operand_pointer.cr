@@ -14,6 +14,7 @@ module UDis86
     #
     delegate seg, to: @operand_pointer
 
+    @[AlwaysInline]
     def segment
       seg
     end
@@ -23,6 +24,7 @@ module UDis86
     #
     delegate off, to: @operand_pointer
 
+    @[AlwaysInline]
     def offset
       off
     end

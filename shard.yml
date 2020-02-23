@@ -1,0 +1,18 @@
+name: udis86
+version: 0.1.0
+
+authors:
+  - Postmodern <postmodern.mod3@gmail.com>
+
+crystal: 0.33.0
+
+license: MIT
+
+libraries:
+  udis86: ~> 0
+
+development_dependencies:
+  spectator:
+    gitlab: arctic-fox/spectator
+  # crodoc:
+  #   github: watzon/crodoc

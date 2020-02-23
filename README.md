@@ -1,4 +1,4 @@
-# UDis86
+# udis86.cr
 
 * [Source](http://github.com/postmodern/crystal-udis86/)
 * [Issue](http://github.com/postmodern/crystal-udis86/)

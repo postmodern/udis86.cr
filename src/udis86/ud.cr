@@ -337,23 +337,12 @@ module UDis86
       io << to_asm
     end
 
-    {% begin %}
-    # Set of libudis86 operand UDTypes
-    OPERAND_TYPES = Set{
-      {% for element in LibUDis86::UDType.constants %}
-        {% if element.starts_with?("OP_") %}
-          LibUDis86::UDType::{{ element.id }},
-        {% end %}
-      {% end %}
-    }
-    {% end %}
-
     #
     # Returns the operands for the last disassembled instruction.
     #
     def operands
       @ud.operand.select { |operand|
-        OPERAND_TYPES.includes?(operand)
+        operand.type.is_op?
       }.map(&->Operand.new(LibUDis86::UDOperand))
     end
 

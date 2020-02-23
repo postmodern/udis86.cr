@@ -14,5 +14,6 @@ libraries:
 development_dependencies:
   spectator:
     gitlab: arctic-fox/spectator
+    version: ">= 0.9.9 and < 1.0.0"
   # crodoc:
   #   github: watzon/crodoc

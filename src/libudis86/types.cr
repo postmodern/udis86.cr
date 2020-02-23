@@ -70,6 +70,23 @@ lib LibUDis86
     # Operand Types
     OP_REG; OP_MEM; OP_PTR; OP_IMM
     OP_JIMM; OP_CONST
+
+    def is_op?
+      self == OP_REG  ||
+      self == OP_MEM  ||
+      self == OP_PTR  ||
+      self == OP_IMM  ||
+      self == OP_JIMM ||
+      self == OP_CONST
+    end
+
+    def none?
+      self == None
+    end
+
+    def is_reg?
+      !none? && !is_op?
+    end
   end
 
   struct UDLValPtr

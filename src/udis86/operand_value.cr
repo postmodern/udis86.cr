@@ -4,9 +4,15 @@ require "./operand_pointer"
 module UDis86
   class OperandValue
 
+    #
+    # Initializes the operand value object.
+    #
     def initialize(@operand_value : LibUDis86::UDLVal)
     end
 
+    #
+    # The signed byte value of the operand.
+    #
     delegate sbyte, to: @operand_value
 
     @[AlwaysInline]
@@ -19,6 +25,9 @@ module UDis86
       sbyte
     end
 
+    #
+    # The unsigned byte value of the operand.
+    #
     delegate ubyte, to: @operand_value
 
     @[AlwaysInline]
@@ -31,6 +40,9 @@ module UDis86
       ubyte
     end
 
+    #
+    # The signed word value of the operand.
+    #
     delegate sword, to: @operand_value
 
     @[AlwaysInline]
@@ -38,6 +50,9 @@ module UDis86
       sword
     end
 
+    #
+    # The unsigned word value of the operand.
+    #
     delegate uword, to: @operand_value
 
     @[AlwaysInline]
@@ -50,6 +65,9 @@ module UDis86
       uword
     end
 
+    #
+    # The signed double-word value of the operand.
+    #
     delegate sdword, to: @operand_value
 
     @[AlwaysInline]
@@ -57,6 +75,9 @@ module UDis86
       sdword
     end
 
+    #
+    # The unsigned double-word value of the operand.
+    #
     delegate udword, to: @operand_value
 
     @[AlwaysInline]
@@ -69,6 +90,9 @@ module UDis86
       udword
     end
 
+    #
+    # The signed quad-word value of the operand.
+    #
     delegate sqword, to: @operand_value
 
     @[AlwaysInline]
@@ -76,6 +100,9 @@ module UDis86
       sqword
     end
 
+    #
+    # The unsigned quad-word value of the operand.
+    #
     delegate uqword, to: @operand_value
 
     @[AlwaysInline]
@@ -88,6 +115,9 @@ module UDis86
       uqword
     end
 
+    #
+    # The pointer value of the operand.
+    #
     def ptr
       OperandPointer.new(@operand_value.ptr)
     end

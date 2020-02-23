@@ -80,10 +80,9 @@ module UDis86
     # The value of the operand.
     #
     def value
-      case type
-      when :ud_op_reg then nil
-      when :ud_op_ptr then OperandPointer.new(@operand.value.ptr)
-      else                 OperandValue.new(@operand.value)
+      if    is_reg?; nil
+      elsif is_ptr?; OperandPointer.new(@operand.value.ptr)
+      else           OperandValue.new(@operand.value)
       end
     end
 

@@ -26,7 +26,7 @@ Crystal bindings for [libudis86]. Inspired by the Ruby [ffi-udis86] gem.
    ```yaml
    dependencies:
      udis86:
-       github: postmodern/udis86
+       github: postmodern/udis86.cr
    ```
 
 3. Run `shards install`

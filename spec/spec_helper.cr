@@ -17,7 +17,3 @@ module Fixtures
     end
   end
 end
-
-Spectator.configure do |config|
-  config.formatter = Spectator::Formatting::DocumentFormatter.new
-end

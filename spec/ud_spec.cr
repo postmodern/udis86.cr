@@ -44,7 +44,7 @@ Spectator.describe UDis86::UD do
     end
 
     context "when given pc" do
-      let(pc) { 0x400000 }
+      let(pc) { 0x400000_u64 }
       subject { described_class.create(pc: pc) }
 
       it "should set the #pc" do
@@ -311,7 +311,7 @@ Spectator.describe UDis86::UD do
     end
 
     context "when #pc is set" do
-      let(pc) { 0x40000 }
+      let(pc) { 0x40000_u64 }
 
       subject do
         described_class.new.tap do |ud|
@@ -326,7 +326,7 @@ Spectator.describe UDis86::UD do
   end
 
   describe "#pc=" do
-    let(pc) { 0x40000 }
+    let(pc) { 0x40000_u64 }
 
     it "should return the set pc value" do
       subject.pc = pc

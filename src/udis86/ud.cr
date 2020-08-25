@@ -2,8 +2,8 @@ require "../libudis86"
 require "./operand"
 
 module UDis86
-
   class UD
+
     include Enumerable(self)
 
     #
@@ -16,7 +16,7 @@ module UDis86
     #
     # Creates a new disassembler object.
     #
-    def self.create(mode = 64, vendor = nil, syntax = nil, pc = nil, buffer = nil)
+    def self.create(mode : UInt8 = 64, vendor : Symbol? = nil, syntax : Symbol? = nil, pc : UInt64? = nil, buffer : String? = nil)
       ud = new
 
       ud.vendor = vendor if vendor
@@ -40,7 +40,7 @@ module UDis86
     #
     # Opens a file and disassembles it.
     #
-    def self.open(path,**options)
+    def self.open(path : String, **options)
       File.open(path,"rb") do |file|
         ud = create(**options) do |ud|
           (file.read_byte || -1).to_i32
@@ -143,7 +143,7 @@ module UDis86
     #
     # Sets the mode the disassembler will run in.
     #
-    def mode=(mode : Int)
+    def mode=(mode : Int) : Int
       unless MODES.includes?(mode)
         raise ArgumentError.new("invalid mode: #{mode}")
       end
@@ -160,7 +160,7 @@ module UDis86
     #
     # Returns the syntax which the disassembler will emit.
     #
-    def syntax
+    def syntax : Symbol?
       unless @ud.translator.pointer.null?
         SYNTAX.invert[@ud.translator]
       end
@@ -169,7 +169,7 @@ module UDis86
     #
     # Sets the syntax which the disassembler will emit.
     #
-    def syntax=(syntax)
+    def syntax=(syntax : Symbol)
       ud_translator = SYNTAX.fetch(syntax) do
         raise ArgumentError.new("unknown syntax: #{syntax}")
       end
@@ -187,7 +187,7 @@ module UDis86
     # The vendor of whose instructions are to be chosen from during
     # disassembly.
     #
-    def vendor
+    def vendor : Symbol
       VENDORS.invert[@ud.vendor]
     end
 
@@ -195,7 +195,7 @@ module UDis86
     # Sets the vendor, of whose instructions are to be chosen from
     # during disassembly.
     #
-    def vendor=(vendor : Symbol)
+    def vendor=(vendor : Symbol) : Symbol
       ud_vendor = VENDORS.fetch(vendor) do
         raise ArgumentError.new("unsupported vendor: #{vendor}")
       end
@@ -204,13 +204,15 @@ module UDis86
       return vendor
     end
 
-    def input_index
+    alias SizeT = LibC::SizeT
+
+    def input_index : SizeT?
       unless @ud.inp_buf.null?
         @ud.inp_buf_index
       end
     end
 
-    def input_size
+    def input_size : SizeT?
       unless @ud.inp_buf.null?
         @ud.inp_buf_size
       end
@@ -220,7 +222,7 @@ module UDis86
     # Causes the disassembler to skip a certain number of bytes in the
     # input stream.
     #
-    def input_skip(count)
+    def input_skip(count : UInt8) : self
       LibUDis86.ud_set_mode(pointerof(@ud), count)
       return self
     end
@@ -229,7 +231,7 @@ module UDis86
     # Tests for the end of input. You can use this function to test if the
     # input has been exhausted.
     #
-    def input_end?
+    def input_end? : Bool
       LibUDis86.ud_input_end(pointerof(@ud)) > 0
     end
 
@@ -241,7 +243,7 @@ module UDis86
     #
     # Sets the value of the Program Counter (PC).
     #
-    def pc=(value)
+    def pc=(value : UInt64) : UInt64
       LibUDis86.ud_set_pc(pointerof(@ud), value)
       return value
     end
@@ -258,7 +260,7 @@ module UDis86
     #
     # The mnemonic code of the last disassembled instruction.
     #
-    def insn_mnemonic
+    def insn_mnemonic : Symbol
       MNEMONICS[LibUDis86.ud_insn_mnemonic(pointerof(@ud))]
     end
 
@@ -270,7 +272,7 @@ module UDis86
     #
     # The mnemonic string of the last disassembled instruction.
     #
-    def mnemonic
+    def mnemonic : String
       String.new(LibUDis86.ud_lookup_mnemonic(@ud.mnemonic))
     end
 
@@ -317,7 +319,7 @@ module UDis86
     #
     # Returns the assembly syntax for the last disassembled instruction.
     #
-    def to_asm
+    def to_asm : String
       String.new(LibUDis86.ud_insn_asm(pointerof(@ud)))
     end
 
@@ -325,11 +327,11 @@ module UDis86
     # Returns the hexadecimal representation of the disassembled
     # instruction.
     #
-    def to_hex
+    def to_hex : String
       String.new(LibUDis86.ud_insn_hex(pointerof(@ud)))
     end
 
-    def to_s
+    def to_s : String
       to_asm
     end
 
@@ -340,7 +342,7 @@ module UDis86
     #
     # Returns the operands for the last disassembled instruction.
     #
-    def operands
+    def operands : Array(Operand)
       @ud.operand.select { |operand|
         operand.type.is_op?
       }.map(&->Operand.new(LibUDis86::UDOperand))
@@ -349,14 +351,16 @@ module UDis86
     #
     # Disassembles the next instruction in the input stream.
     #
-    def next_insn
+    def next_insn : Bool
       LibUDis86.ud_disassemble(pointerof(@ud)) > 0
     end
+
+    alias UInt = LibC::UInt
 
     #
     # Returns the number of bytes that were disassembled.
     #
-    def insn_length
+    def insn_length : UInt
       LibUDis86.ud_insn_len(pointerof(@ud))
     end
 
@@ -364,7 +368,7 @@ module UDis86
     # Returns the starting offset of the disassembled instruction
     # relative to the initial value of the Program Counter (PC).
     #
-    def insn_offset
+    def insn_offset : UInt64
       LibUDis86.ud_insn_off(pointerof(@ud))
     end
 
@@ -372,7 +376,7 @@ module UDis86
     # Returns the pointer to the buffer holding the disassembled
     # instruction bytes.
     #
-    def insn_ptr
+    def insn_ptr : Pointer(UInt8)
       LibUDis86.ud_insn_ptr(pointerof(@ud))
     end
 
@@ -380,7 +384,7 @@ module UDis86
     # Returns the operand at the nth (starting with 0) position of the
     # instruction.
     #
-    def insn_opr(index = 0)
+    def insn_opr(index = 0) : Operand?
       unless (opr_ptr = LibUDis86.ud_insn_opr(pointerof(@ud),index)).null?
         return Operand.new(opr_ptr.value)
       end

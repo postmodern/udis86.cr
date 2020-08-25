@@ -365,7 +365,7 @@ module UDis86
     # relative to the initial value of the Program Counter (PC).
     #
     def insn_offset
-      LibUDis86.ud_insn_offset(pointerof(@ud))
+      LibUDis86.ud_insn_off(pointerof(@ud))
     end
 
     #

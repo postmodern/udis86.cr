@@ -25,49 +25,49 @@ module UDis86
     #
     # The type of the operand.
     #
-    def type
+    def type : Symbol
       TYPES[@operand.type]
     end
 
     #
     # Determines if the operand is a memory access.
     #
-    def is_mem?
+    def is_mem? : Bool
       @operand.type == UDType::OP_MEM
     end
 
     #
     # Determines if the operand is Segment:Offset pointer.
     #
-    def is_seg_ptr?
+    def is_seg_ptr? : Bool
       @operand.type == UDType::OP_PTR
     end
 
     #
     # Determines if the operand is immediate data.
     #
-    def is_imm?
+    def is_imm? : Bool
       @operand.type == UDType::OP_IMM
     end
 
     #
     # Determines if the operand is a relative offset used in a jump.
     #
-    def is_jmp_imm?
+    def is_jmp_imm? : Bool
       @operand.type = UDType::OP_JIMM
     end
 
     #
     # Determines if the operand is a data constant.
     #
-    def is_const?
+    def is_const? : Bool
       @operand.type == UDType::OP_COONST
     end
 
     #
     # Determines if the operand is a register.
     #
-    def is_reg?
+    def is_reg? : Bool
       @operand.type == UDType::OP_REG
     end
 
@@ -79,7 +79,7 @@ module UDis86
     #
     # The value of the operand.
     #
-    def value
+    def value : OperandPointer | OperandValue | Nil
       if    is_reg?; nil
       elsif is_ptr?; OperandPointer.new(@operand.value.ptr)
       else           OperandValue.new(@operand.value)
@@ -100,7 +100,7 @@ module UDis86
     #
     # The base register used by the operand.
     #
-    def base
+    def base : Symbol
       REGS[@operand.base]
     end
 
@@ -112,23 +112,23 @@ module UDis86
     #
     # The index register used by the operand.
     #
-    def index
+    def index : Symbol
       REGS[@operand.index]
     end
 
     #
     # The offset value used by the operand.
     #
-    def offset
+    def offset : OperandValue | Int32
       if @operand.offset > 0; OperandValue.new(@operand.value)
       else                    0
       end
     end
 
-    @[AlwaysInline]
     #
     # The word-length of the offset used with the operand.
     #
+    @[AlwaysInline]
     def offset_size
       @operand.offset
     end

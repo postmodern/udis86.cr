@@ -17,7 +17,7 @@ jobs:
       run: |
         apt-get update -y && \
         apt-get install -y software-properties-common && \
-        add-apt-repository ppa:sbasalaev/pub && \
+        add-apt-repository -y ppa:sbasalaev/pub && \
         apt-get update -y && \
         apt-get install -y udis86
     - name: Install dependencies

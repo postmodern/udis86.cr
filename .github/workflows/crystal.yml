@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ '**' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: crystallang/crystal
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install libextractor
+      run: |
+        add-apt-repository ppa:sbasalaev/pub && \
+        apt-get update && \
+        apt-get install -yq udis86
+    - name: Install dependencies
+      run: shards install
+    - name: Run tests
+      run: crystal spec

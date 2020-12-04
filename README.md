@@ -3,7 +3,8 @@
 * [Source](http://github.com/postmodern/crystal-udis86/)
 * [Issue](http://github.com/postmodern/crystal-udis86/)
 
-[Crystal][crystal] bindings for [libudis86]. Inspired by the Ruby [ffi-udis86] gem.
+[Crystal][crystal] bindings for [libudis86]. Inspired by the Ruby [ffi-udis86]
+gem and should be API compatible.
 
 ## Installation
 

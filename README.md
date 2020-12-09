@@ -16,7 +16,7 @@ gem and should be API compatible.
 
    * RedHat / Fedora:
 
-         $ sudo apt install udis86-devel
+         $ sudo dnf install udis86-devel
 
    * Brew:
 

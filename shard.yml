@@ -13,7 +13,7 @@ crystal: 0.33.0
 license: MIT
 
 libraries:
-  udis86: ~> 0
+  libudis86: ~> 0
 
 development_dependencies:
   spectator:

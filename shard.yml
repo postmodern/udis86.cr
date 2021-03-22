@@ -8,7 +8,7 @@ description: |
   Crystal bindings for libudis86, an easy-to-use, minimalistic disassembler
   library for the x86-64 / x86 class of instruction set architectures. 
 
-crystal: 0.33.0
+crystal: ">= 0.33.0"
 
 license: MIT
 

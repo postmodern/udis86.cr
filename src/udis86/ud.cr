@@ -112,7 +112,7 @@ module UDis86
       @input_callback = callback
       @input_callback_box = Box.box(InputCallbackUserData.new(self, callback))
 
-      LibUDis86.ud_set_user_opaque_data(pointerof(@ud), @input_callback_box)
+      LibUDis86.ud_set_user_opaque_data(pointerof(@ud), @input_callback_box.not_nil!)
 
       LibUDis86.ud_set_input_hook(pointerof(@ud), ->(ud : LibUDis86::UD*) {
         user_data = LibUDis86.ud_get_user_opaque_data(ud)
